@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="main.css"/>
+  <title>Unreal Engine 4 Terminology</title>
+</head>
+<body>
+<a class="top" href="#">TOP</a>
+<header>
+  <nav id="navbar">
+    <header>UE4 Terminology</header>
+    <ul>
+      <li><a class="nav-link" href="#Unreal_Engine_4_Terminology">Unreal Engine 4 Terminology</a></li>
+      <li><a class="nav-link" href="#Projects">Projects</a></li>
+      <li><a class="nav-link" href="#Objects">Objects</a></li>
+      <li><a class="nav-link" href="#Classes">Classes</a></li>
+      <li><a class="nav-link" href="#Actors">Actors</a></li>
+      <li><a class="nav-link" href="#Components">Components</a></li>
+      <li><a class="nav-link" href="#Pawns">Pawns</a></li>
+      <li><a class="nav-link" href="#Characters">Characters</a></li>
+      <li><a class="nav-link" href="#PlayerController">PlayerController</a></li>
+      <li><a class="nav-link" href="#AIController">AIController</a></li>
+      <li><a class="nav-link" href="#Brushes">Brushes</a></li>
+      <li><a class="nav-link" href="#Levels">Levels</a></li>
+      <li><a class="nav-link" href="#World">World</a></li>
+      <li><a class="nav-link" href="#GameModes">GameModes</a></li>
+      <li><a class="nav-link" href="#GameStates">GameStates</a></li>
+      <li><a class="nav-link" href="#PlayerStates">PlayerStates</a></li>
+      <li><a class="nav-link" href="#Reference">Reference</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main-doc">
+<section id="Unreal_Engine_4_Terminology" class="main-section">
+  <header>Unreal Engine 4 Terminology</header>
+  <p>Covers the most commonly used terms when working with Unreal Engine 4.
+This page is dedicated to describing the commonly used terms when working with Unreal Engine 4. For example, if you find yourself asking questions like "What is an Actor", "What is a Component", or "What is a Pawn", this page will highlight and provide descriptions for those types of questions and more. Once you have an understanding of what each term means, links are provided for more documentation and guidance on working with them.</p>
+</section>
+
+<section id="Projects" class="main-section">
+<header>Projects</header>
+<p>A Project is a self-contained unit that holds all the content and code that make up an individual game and coincides with a set of directories on your disk. For example, in the image below the Hierarchy Tree of the Content Browser contains the same directory structure found inside your Project folder on your disk.</p>
+<img src="https://docs.unrealengine.com/Images/Shared/Glossary/P/ProjectHierarchy_Windows.webp" alt="">
+<p>Although a Project is often referenced by the .uproject file associated with it, they are two separate files that exist alongside each other. The .uproject is a reference file used to create, open, or save a file, whereas the Project contains all of the files and folders associated with it.
+
+You can create any number of different Projects which can all be maintained and developed in parallel. Both the Engine (and Editor) can easily switch between them which will allow you to work on multiple games at once or have several test projects in addition to your main game Project.
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Basics/Projects/index.html" target="_blank">Working with Unreal Projects</a></li>
+</ul>
+</section>
+
+<section id="Objects" class="main-section">
+<header>Objects</header>
+<img src="https://docs.unrealengine.com/Images/Gameplay/UnrealTerminology/pawn_actor.webp" alt="">
+<p>The base building blocks in the Unreal Engine are called Objects and contain a lot of the essential "under the hood" functionality for your game assets. Just about everything in Unreal Engine 4 inherits (or gets some functionality) from an Object. In C++, UObject is the base class of all objects; it implements features such as garbage collections, metadata (UProperty) support for exposing variables to the Unreal Editor, and serialization for loading and saving.
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/UnrealTerminology/index.html" target="_blank">Unreal Projects and Gameplay</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/index.html" target="_blank">Unreal Architecture</a></li>
+</ul>
+</section>
+
+<section id="Classes" class="main-section">
+  <header>Classes</header>
+  <img src="https://docs.unrealengine.com/Images/Gameplay/ClassCreation/Both_topic.webp" alt="">
+  <p>A Class defines the behaviors and properties of a particular Actor or Object used in the creation of an Unreal Engine game. Classes are hierarchical, meaning a Class inherits information from its parent Classes (the Classes it was derived or "sub-classed" from) and passes that information to its children. Classes can be created in C++ code or in Blueprints.</p>
+<h3>Adding Classes</h3>
+<p>The C++ Class Wizard sets up the header file and source file you need for your new class, and also updates your game module accordingly. The header file and source file automatically include the class declaration and class constructor, as well as Unreal Engine-specific code like the UCLASS() macro.</p>
+<h3>Class Headers</h3>
+<p>Gameplay classes in Unreal Engine generally have separate and unique class header files. These files are usually named to match the class being defined within, minus the A or U prefix, and using the .h file extension. So, the class header file for the AActor class is named Actor.h. Although Epic code follows these guidelines, no formal relationship between class name and source file name exists in the current engine.
+
+Class header files for gameplay classes use standard C++ syntax in conjunction with specialized macros to simplify the process of declaring classes, variables, and functions.
+
+At the top of each gameplay class header file, the generated header file (created automatically) needs to be included. So, at the top of ClassName.h, the following line must appear:</p>
+<code>#include "ClassName.generated.h"</code>
+<h3>Class Declaration</h3>
+<p>The class declaration defines the name of the class, what class it inherits from and, thus, any functions and variables it inherits. The class declaration also defines other engine and editor specific behavior that may be desired via class specifiers and metadata.
+
+The syntax for declaring a class is as follows:</p>
+<code>UCLASS([specifier, specifier, ...], [meta(key=value, key=value, ...)])
+class ClassName : public ParentName
+{
+    GENERATED_BODY()
+}</code>
+<p>The declaration consists of a standard C++ class declaration for the class. Above the standard declaration, descriptors such as class specifiers and metadata are passed to the UCLASS
+
+These are used to create the UClass for the class being declared, which can be thought of as the engine's specialized representation of the class. Also, the GENERATED_BODY() macro must be placed at the very beginning of the class body.</p>
+<h3>Class Implementation</h3>
+<p>All gameplay classes must use the GENERATED_BODY macro in order to be implemented properly. This is done in the class header (.h) file that defines the class and all of its variables and functions. A best practice is for the class source and header files to be named to match the class being implemented, minus the A or U prefix. So, the source file for the AActor class is named Actor.cpp, and its header file is named Actor.h. This is handled automatically for classes created by the "Add C++ Class" menu option within the editor.
+
+The source file (.cpp) must include the header file (.h) that contains the C++ class declaration, which is usually generated automatically but can also be created manually (if desired). For example, the C++ declaration for the AActor class is automatically generated in the EngineClasses.h header file. This means the Actor.cpp file must include the EngineClasses.h file or another file that in turn includes it. Generally, you just include the header file for your game project, which will include the headers for the gameplay classes in your game project. In the case of AActor and EngineClasses.h, the EnginePrivate.h header is included, which includes Engine.h the header file for the Engine project and that includes the EngineClasses.h header file.</p>
+<code>#include "EnginePrivate.h"</code>
+<h3>Class Constructor</h3>
+<p>UObjects use Constructors to set default values for properties and other variables as well as perform other necessary initialization. The class constructor is generally placed within the class implementation file, e.g. the AActor::AActor constructor is in Actor.cpp.</p>
+<p>It is also possible to place the constructor inline in the class header file. However, if the constructor is in the class header file, the UClass must be declared with the CustomConstructor specifier as this prevents the automatic code generator from creating a constructor declaration in the header.</p>
+<h3>Constructor Format</h3>
+<p>The most basic form of a UObject constructor is shown below:</p>
+<code>UMyObject::UMyObject()
+{
+    // Initialize Class Default Object properties here.
+}</code>
+<p>This constructor initializes the Class Default Object (CDO), which is the master copy on which future instances of the class are based. There is also a secondary constructor that supports a special property-altering structure:</p>
+<code>UMyObject::UMyObject(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
+{
+    // Initialize CDO properties here.
+}</code>
+<p>Although neither of the above constructors actually perform any initialization, the engine will have already initialized all fields to zero, NULL, or whatever value their default constructors implement. However, any initialization code written into the constructor will be applied to the CDO, and will therefore be copied to any new instances of the object created properly within the engine, as with CreateNewObject or SpawnActor.
+
+The FObjectInitializer parameter that is passed into the constructor, despite being marked as const, can be configured via built-in mutable functions to override properties and subobjects. The UObject being created will be affected by these changes, and this can be used to change the values of registered properties or components.</p>
+<code>AUDKEmitterPool::AUDKEmitterPool(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer.DoNotCreateDefaultSubobject(TEXT("SomeComponent")).DoNotCreateDefaultSubobject(TEXT("SomeOtherComponent")))
+{
+    // Initialize CDO properties here.
+}</code>
+<p>In the above case, the superclass was going to create the subobjects named "SomeComponent" and "SomeOtherComponent" in its constructor, but it will not do so because of the FObjectInitializer. In the following case, SomeProperty will default to 26 in the CDO, and thus in every fresh instance of AUTDemoHUD.</p>
+<code>AUTDemoHUD::AUTDemoHUD()
+{
+    // Initialize CDO properties here.
+    SomeProperty = 26;
+}</code>
+<p>For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Blueprints/UserGuide/Types/ClassBlueprint/index.html" target="_blank">Blueprint Class</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html" target="_blank">Gameplay Classes</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/ClassCreation/index.html" target="_blank">Class Creation Basics</a></li>
+</ul>
+</section>
+
+<section id="Actors" class="main-section">
+  <header>Actors</header>
+  <img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/actors_topic.webp" alt="">
+  <p>An Actor is any object that can be placed into a level. Actors are a generic Class that support 3D transformations such as translation, rotation, and scale. Actors can be created (spawned) and destroyed through gameplay code (C++ or Blueprints). In C++, AActor is the base class of all Actors.
+
+There are several different types of Actors, some examples include: StaticMeshActor, CameraActor, and PlayerStartActor.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Actors/index.html" target="_blank">Actors and Geometry</a></li>
+</ul>
+</section>
+
+<section id="Components" class="main-section">
+<header>Components</header>
+<img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/components_topic.webp" alt="">
+<p>A Component is a piece of functionality that can be added to an Actor. Components cannot exist by themselves, however when added to an Actor, the Actor will have access to and can use functionality provided by the Component.
+
+For example, a Spot Light Component will allow your Actor to emit light like a spot light, a Rotating Movement Component will make your Actor spin around, or an Audio Component will make your Actor able to play sounds.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Components/index.html" target="_blank">Components</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Blueprints/UserGuide/Components/index.html" target="_blank">Components Window</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Actors/Components/index.html" target="_blank">Components in Code</a></li>
+</ul>
+</section>
+
+<section id="Pawns" class="main-section">
+<header>Pawns</header>
+<img src="https://docs.unrealengine.com/Images/Gameplay/Framework/Pawn/pawn_ball.webp" alt="">
+<p>Pawns are a subclass of Actor and serve as an in-game avatar or persona, for example the characters in a game. Pawns can be controlled by a player or by the game's AI, in the form of non-player characters (NPCs).
+
+When a Pawn is controlled by a human or AI player, it is considered as Possessed. Conversely, when a Pawn is not controlled by a human or AI player it is considered as Unpossessed.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/Pawn/index.html" target="_blank">Pawn</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/HowTo/PossessPawns/index.html" target="_blank">Possessing Pawns</a></li>
+</ul>
+</section>
+
+<section id="Characters" class="main-section">
+<header>Characters</header>
+<img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/character_topic.webp" alt="">
+<p>A Character is a subclass of a Pawn Actor that is intended to be used as a player character. The Character subclass includes a collision setup, input bindings for bipedal movement, and additional code for movement controlled by the player.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/Pawn/Character/index.html" target="_blank">Character</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Animation/CharacterSetupOverview/index.html" target="_blank">Character Setup</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/HowTo/CharacterMovement/Blueprints/index.html" target="_blank">How To - Character Movement</a></li>
+</ul>
+</section>
+
+<section id="PlayerController" class="main-section">
+<header>PlayerController</header>
+<img src="https://docs.unrealengine.com/Images/Engine/Animation/CharacterSetupOverview/ArtAssets.webp" alt="">
+<p>The PlayerController Class is used to take player input and translate that into interactions in the game and every game has at least one PlayerController in it. A PlayerController often possesses a Pawn or Character as a representation of the player in a game.
+
+The PlayerController is also the primary network interaction point for multiplayer games. During multiplayer play, the server has one instance of a PlayerController for every player in the game since it must be able to make network function calls to each player. Each client only has the PlayerController that corresponds to their player and can only use their PlayerController to communicate with the server.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/Controller/PlayerController/index.html" target="_blank">PlayerController</a></li>
+</ul>
+</section>
+
+<section id="AIController" class="main-section">
+<header>AIController</header>
+<img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/fullTree.webp" alt="">
+<p>Just as the PlayerController possesses a Pawn as a representation of the player in a game, an AIController possesses a Pawn to represent a non-player character (NPC) in a game. By default, Pawns and Characters will end up with a base AIController unless they are specifically possessed by a PlayerController or told not to create an AIController for themselves.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/Controller/AIController/index.html" target="_blank">AIController</a></li>
+</ul>
+</section>
+
+<section id="Brushes" class="main-section">
+<header>Brushes</header>
+<img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/geometry_brush.webp" alt="">
+<p>A Brush is an Actor that describes a 3D volume that is placed in a level in order to define level geometry (referred to as BSPs) and gameplay volumes. Typically you will use BSP Brushes to prototype or block-out your levels for gameplay testing.
+
+Volumes on the other hand have several uses depending upon the effects attached to them such as: Blocking Volumes (which are invisible and used to prevent Actors from passing through them), Pain Causing Volumes (which causes damage over time to any Actor that overlaps it) or Trigger Volumes (which are used as a way to cause events when an Actor enters or exits them).
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Actors/Brushes/index.html" target="_blank">Geometry Brush Actors</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Resources/ContentExamples/Brushes/index.html" target="_blank">Geometry Editing Content Examples</a></li>
+</ul>
+</section>
+
+<section id="Levels" class="main-section">
+<header>Levels</header>
+<img src="https://docs.unrealengine.com/Images/Engine/Levels/Level_Intro.webp" alt="">
+<p>A Level is a user defined area of gameplay. Levels are created, viewed, and modified mainly by placing, transforming, and editing the properties of the Actors it contains. In the Unreal Editor, each Level is saved as a separate .umap file, which is also why you will sometimes see them referred to as Maps.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/Levels/index.html" target="_blank">Levels</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/UI/LevelEditor/index.html" target="_blank">Level Editor</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Resources/ContentExamples/LevelDesign/index.htm" target="_blank">Level Design Content Examples</a></li>
+</ul>
+</section>
+
+<section id="World" class="main-section">
+<header>World</header>
+<img src="https://docs.unrealengine.com/Images/Engine/LevelStreaming/WorldBrowser/LevelsWindow.webp" alt="">
+<p>A World contains a list of Levels that are loaded. It handles the streaming of Levels and the spawning (creation) of dynamic Actors.
+
+Direct interaction with a World is not necessary, but it does help provide a specific reference point within the game structure (ie: mentioning World directly means you are not speaking about Levels, Maps or the game).
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Engine/LevelStreaming/WorldBrowser/index.html" target="_blank">World Composition User Guide</a></li>
+</ul>
+</section>
+
+<section id="GameModes" class="main-section">
+<header>GameModes</header>
+<img src="https://docs.unrealengine.com/Images/Gameplay/Framework/gamemode_lander.webp" alt="">
+<p>The GameMode Class is responsible for setting the rules of the game that is being played. The rules can include how players join the game, whether or not a game can be paused, and level transitions, as well as any game-specific behavior such as win conditions.
+
+You can set the default GameMode in the Project Settings, but can override it on a per-Level basis. Regardless of how you choose to implement the GameMode, there is always only one GameMode present per-level. In a multiplayer game, the GameMode only exists on the server and the rules are replicated (sent) to each of the connected clients.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/GameMode/index.html" target="_blank">GameMode</a></li>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/HowTo/SettingUpAGameMode/Blueprints/index.html" target="_blank">Setting Up a Game Mode in Blueprints</a></li>
+</ul>
+</section>
+
+<section id="GameStates" class="main-section">
+<header>GameStates</header>
+<img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/gamestate_topic.webp" alt="">
+<p>The GameState contains the information that you want replicated to every client in a game, or more simply it is 'The State of the Game' for everyone connected.
+
+It often contains information about game score, whether a match has started or not, how many AI to spawn based upon the number of players in the world, and other game specific information.
+
+For mutliplayer games, there is one instance of the GameState on each player's machine with the server's instance being the authoritative one (or the one that clients get their updated information from).
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/GameMode/index.html#gamestate" target="_blank">GameState</a></li>
+</ul>
+</section>
+
+<section id="PlayerStates" class="main-section">
+<header>PlayerStates</header>
+<img src="https://docs.unrealengine.com/Images/GettingStarted/Terminology/playerstate_topic.webp" alt="">
+<p>A PlayerState is the state of a participant in the game, such as a human player or a bot that is simulating a player. Non-player AI that exists as part of the game world would not have a PlayerState.
+
+Example data that would be appropriate in a PlayerState include player name or score, their current level or health, or whether they are currently carrying the flag in a Capture the Flag game.
+
+For multiplayer games, PlayerStates for all players exist on all machines (unlike PlayerControllers) and can replicate data from the server to the client to keep things in sync.
+
+For more information, see:</p>
+<ul>
+  <li><a href="https://docs.unrealengine.com/en-US/Gameplay/Framework/QuickReference/index.html" target="_blank">Gameplay Framework Quick Reference</a></li>
+</ul>
+</section>
+
+<section id="Reference" class="main-section">
+<header>Reference</header>
+<p>All the documentation in this page is taken from <a href="https://docs.unrealengine.com/en-US/GettingStarted/Terminology/index.html" target="_blank">UNREAL ENGINE</a></p>
+</section>
+
+</main>
+
+</body>
+</html>
